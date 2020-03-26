@@ -1,14 +1,34 @@
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//     const re = new RegExp('bear', 'gi')
-//     const matches = document.documentElement.innerHTML.match(re)
-//     sendResponse({count: matches.length})
-// })
+const url = window.location.href;
+var myStorage = window.localStorage;
+var delStorage = window.localStorage;
 
-// const re = new RegExp('bear', 'gi')
-// const matches = document.documentElement.innerHTML.match(re)
-const url = window.location.href
-alert(url)
-// chrome.runtime.sendMessage({
-//     url: window.location.href,
-//     count: matches.length
-// })
+if(myStorage.getItem(url) === null || myStorage.getItem(url) == []){
+    myStorage.setItem(savePlaylist(url));
+} else {
+    var current = returnPlaylist(url);
+    var check = myStorage.getItem(url);
+    if(!matching(current, check)){
+        
+    }
+    
+}
+
+function returnPlaylist(currentURL){
+    var vidArray = []
+    var videos = document.querySelectorAll("#video-title");
+    for (var i = 0; i < videos.length; i++){
+        if(videos[i].innerHTML.trim() != "[Private video]" &&
+        videos[i].innerHTML.trim() != "[Deleted video]"){
+            vidArray.push(videos[i].innerHTML.trim());
+        }
+    }
+    return vidArray;
+}
+
+function matching(arr1, arr2){
+    if(arr1.length !== arr2.length) return false;
+    for(var i = 0; i < arr1.length; i++){
+        if(arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+}
